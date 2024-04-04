@@ -44,16 +44,16 @@ public class DataGenerator {
 
     private static void generateSampleData(PolicyHoldersController policyHoldersController, InsuranceCardController insuranceCardController, DependentsController dependentsController, AdminController adminController) {
         // Generate sample admins
-        Admin admin1 = new Admin("13052004", "Hai Nguyen", "123456");
-        Admin admin2 = new Admin("0000001", "Demo Admin", "123456");
+        Admin admin1 = new Admin("13112004", "Duy Bui", "111111");
+        Admin admin2 = new Admin("111111", "admin", "11111");
 
         // Add admins to the controller
         adminController.addAdmin(admin1);
         adminController.addAdmin(admin2);
 
         // Generate sample PolicyHolders
-        PolicyHolder policyHolder1 = new PolicyHolder("c-0000001", "Nguyen Ngoc Hai", null); // Constant
-        PolicyHolder policyHolder2 = new PolicyHolder("c-0000002", "Elton John", null);
+        PolicyHolder policyHolder1 = new PolicyHolder("c-1234567", "Tran Hoang Son", null); // Constant
+        PolicyHolder policyHolder2 = new PolicyHolder("c-1234568", "Lebron James", null);
 
         // Generate sample Insurance Cards for PolicyHolders
         InsuranceCard insuranceCard1 = insuranceCardController.generateInsuranceCard(policyHolder1, policyHolder1, "RMIT");
@@ -232,18 +232,18 @@ public class DataGenerator {
     }
 
     private static void deserializeAndPrintData(AdminController adminController, PolicyHoldersController policyHoldersController, DependentsController dependentsController, InsuranceCardController insuranceCardController, ClaimsController claimsController) {
-        policyHoldersController.deserializePolicyHoldersFromFile("data/policyholders.dat");
-        dependentsController.deserializeAllDependents("data/dependents.dat");
-        insuranceCardController.deserializeInsuranceCardsFromFile("data/insuranceCards.dat");
-        adminController.deserializeAdminsFromFile("data/admins.dat");
-        claimsController.deserializeAllClaimsFromFile("data/claims.dat");
-        claimsController.saveClaimsToTextFile("data/claims.txt");
+        policyHoldersController.deserializePolicyHoldersFromFile("InsuranceClaimManagementSystem/Data/policyholders.dat");
+        dependentsController.deserializeAllDependents("InsuranceClaimManagementSystem/Data/dependents.dat");
+        insuranceCardController.deserializeInsuranceCardsFromFile("InsuranceClaimManagementSystem/Data/insuranceCards.dat");
+        adminController.deserializeAdminsFromFile("InsuranceClaimManagementSystem/Data/admins.dat");
+        claimsController.deserializeAllClaimsFromFile("InsuranceClaimManagementSystem/Data/claims.dat");
+        claimsController.saveClaimsToTextFile("InsuranceClaimManagementSystem/Data/claims.txt");
 
         System.out.println("All admins:");
         for (Admin admin : adminController.getAdminList()) {
             System.out.println("Username: " + admin.getUsername());
             System.out.println("Password: " + admin.getPassword());
-            System.out.println("-----------------------------------------------------\n");
+
         }
 
         System.out.println("All policy holders:");
@@ -258,13 +258,13 @@ public class DataGenerator {
             }
             System.out.println();
         }
-        System.out.println("-----------------------------------------------------\n");
+
 
         System.out.println("All dependents: ");
         for (Dependent dependent : dependentsController.getAllDependents()) {
             System.out.println(dependent);
         }
-        System.out.println("-----------------------------------------------------\n");
+
 
         System.out.println("All insurance cards:");
         for (InsuranceCard insuranceCard : insuranceCardController.getInsuranceCards()) {
@@ -273,20 +273,18 @@ public class DataGenerator {
         }
 
         AdminView adminView = new AdminView();
-        adminView.viewAllClaims();
+        adminView.viewClaims();
     }
 
     public static class NameGenerator {
-        private static final String[] FIRST_NAMES = {"Hai", "Nghia", "Mai", "Dat", "Anh", "Linh", "Duy"};
-        private static final String[] MIDDLE_NAMES = {"Ngoc", "Van", "Duc", "Mai", "Phuong", "Thi"};
-        private static final String [] LAST_NAMES = {"Nguyen", "Pham", "Le", "Tran", "Dao"};
+        private static final String[] FIRST_NAMES = {"Hai", "Nghia", "Mai", "Dat", "Josh", "David", "Son", "Duy", "Thao", "Ha"};
+        private static final String [] LAST_NAMES = {"Tran", "Pham", "Nguyen", "Bui", "Luu", "Do","Sins","James","Bryant"};
         private static final Random random = new Random();
 
         private static String generateFullName() {
             String firstName = FIRST_NAMES[random.nextInt(FIRST_NAMES.length)];
-            String middleName = MIDDLE_NAMES[random.nextInt(MIDDLE_NAMES.length)];
             String lastName = LAST_NAMES[random.nextInt(LAST_NAMES.length)];
-            return lastName + " " + middleName + " " + firstName;
+            return lastName + " " + firstName;
         }
     }
 }
