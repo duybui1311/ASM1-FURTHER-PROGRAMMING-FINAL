@@ -45,8 +45,8 @@ public class DataGenerator {
 
     private static void generateSampleData(PolicyHoldersController policyHoldersController, InsuranceCardController insuranceCardController, DependentsController dependentsController, AdminController adminController) {
         // Generate sample admins
-        Admin admin1 = new Admin("13112004", "Duy Bui", "111111");
-        Admin admin2 = new Admin("111111", "admin", "11111");
+        Admin admin1 = new Admin("13112004", "Duy Bui", "123456");
+        Admin admin2 = new Admin("111111", "admin", "123456");
 
         // Add admins to the controller
         adminController.addAdmin(admin1);
@@ -183,6 +183,7 @@ public class DataGenerator {
         calendar.add(Calendar.DAY_OF_YEAR, daysToAdd);
         return calendar.getTime();
     }
+
     private static List<String> generateDocuments() {
         List<String> documents = new ArrayList<>();
         String[] documentTypes = {
@@ -251,29 +252,43 @@ public class DataGenerator {
         }
     }
 
+    public static class NameGenerator {
+        private static final String[] FIRST_NAMES = {"Hai", "Nghia", "Mai", "Dat", "Josh", "David", "Son", "Duy", "Thao", "Ha"};
+        private static final String[] LAST_NAMES = {"Tran", "Pham", "Nguyen", "Bui", "Luu", "Do", "Sins", "James", "Bryant"};
+        private static final Random random = new Random();
 
-
-
-    private static void serializeData(AdminController adminController, PolicyHoldersController policyHoldersController, InsuranceCardController insuranceCardController, DependentsController dependentsController, ClaimsController claimsController) {
-        try {
-            createDirectoryIfNotExists("InsuranceClaimManagementSystem/Data");
-            adminController.serializeAdminToFile("InsuranceClaimManagementSystem/Data/admins.dat");
-            policyHoldersController.serializePolicyHoldersToFile("InsuranceClaimManagementSystem/Data/policyholders.dat");
-            dependentsController.serializeDependentsToFile("InsuranceClaimManagementSystem/Data/dependents.dat");
-            insuranceCardController.serializeInsuranceCardsToFile("InsuranceClaimManagementSystem/Data/insuranceCards.dat");
-            claimsController.serializeClaimsToFile("InsuranceClaimManagementSystem/Data/claims.dat");
-        } catch (IOException e) {
-            System.err.println("Error occurred while serializing data: " + e.getMessage());
+        private static String generateFullName() {
+            String firstName = FIRST_NAMES[random.nextInt(FIRST_NAMES.length)];
+            String lastName = LAST_NAMES[random.nextInt(LAST_NAMES.length)];
+            return lastName + " " + firstName;
         }
     }
 
+    private static void createDirectoryIfNotExists(String directoryPath) {
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                System.err.println("Failed to create directory: " + directoryPath);
+            }
+        }
+    }
+
+    private static void serializeData(AdminController adminController, PolicyHoldersController policyHoldersController, InsuranceCardController insuranceCardController, DependentsController dependentsController, ClaimsController claimsController) {
+        createDirectoryIfNotExists("Data");
+        adminController.serializeAdminToFile("Data/admins.dat");
+        policyHoldersController.serializePolicyHoldersToFile("Data/policyholders.dat");
+        dependentsController.serializeDependentsToFile("Data/dependents.dat");
+        insuranceCardController.serializeInsuranceCardsToFile("Data/insuranceCards.dat");
+        claimsController.serializeClaimsToFile("Data/claims.dat");
+    }
+
     private static void deserializeAndPrintData(AdminController adminController, PolicyHoldersController policyHoldersController, DependentsController dependentsController, InsuranceCardController insuranceCardController, ClaimsController claimsController) {
-        policyHoldersController.deserializePolicyHoldersFromFile("InsuranceClaimManagementSystem/Data/policyholders.dat");
-        dependentsController.deserializeAllDependents("InsuranceClaimManagementSystem/Data/dependents.dat");
-        insuranceCardController.deserializeInsuranceCardsFromFile("InsuranceClaimManagementSystem/Data/insuranceCards.dat");
-        adminController.deserializeAdminsFromFile("InsuranceClaimManagementSystem/Data/admins.dat");
-        claimsController.deserializeAllClaimsFromFile("InsuranceClaimManagementSystem/Data/claims.dat");
-        claimsController.saveClaimsToTextFile("InsuranceClaimManagementSystem/Data/claims.txt");
+        policyHoldersController.deserializePolicyHoldersFromFile("Data/policyholders.dat");
+        dependentsController.deserializeAllDependents("Data/dependents.dat");
+        insuranceCardController.deserializeInsuranceCardsFromFile("Data/insuranceCards.dat");
+        adminController.deserializeAdminsFromFile("Data/admins.dat");
+        claimsController.deserializeAllClaimsFromFile("Data/claims.dat");
+        claimsController.saveClaimsToTextFile("Data/claims.txt");
 
         System.out.println("All admins:");
         for (Admin admin : adminController.getAdminList()) {
@@ -307,23 +322,4 @@ public class DataGenerator {
         adminView.viewClaims();
     }
 
-    private static void createDirectoryIfNotExists(String directoryPath) throws IOException {
-        File directory = new File(directoryPath);
-        if (!directory.exists()) {
-            if (!directory.mkdirs()) {
-                throw new IOException("Failed to create directory: " + directoryPath);
-            }
-        }
-    }
-    public static class NameGenerator {
-        private static final String[] FIRST_NAMES = {"Hai", "Nghia", "Mai", "Dat", "Josh", "David", "Son", "Duy", "Thao", "Ha"};
-        private static final String [] LAST_NAMES = {"Tran", "Pham", "Nguyen", "Bui", "Luu", "Do","Sins","James","Bryant"};
-        private static final Random random = new Random();
-
-        private static String generateFullName() {
-            String firstName = FIRST_NAMES[random.nextInt(FIRST_NAMES.length)];
-            String lastName = LAST_NAMES[random.nextInt(LAST_NAMES.length)];
-            return lastName + " " + firstName;
-        }
-    }
 }

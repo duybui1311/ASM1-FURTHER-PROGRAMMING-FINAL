@@ -17,7 +17,7 @@ public class AdminView {
     private final Scanner scanner = new Scanner(System.in);
 
     // Authenticate admins' login menu
-    public void authenticateAdmins() {
+    public void adminLogin() {
         while (true) {
             adminController.deserializeAdminsFromFile("InsuranceClaimManagementSystem/Data/admins.dat");
             System.out.println("This is the login page for admins");
@@ -43,7 +43,7 @@ public class AdminView {
             } else {
                 System.out.println("Login failed. Please check your username and password.");
                 System.out.println("Exiting admin login...");
-                break;
+
             }
         }
     }
