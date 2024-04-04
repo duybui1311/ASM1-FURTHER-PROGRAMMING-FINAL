@@ -7,8 +7,8 @@ import java.util.List;
 public class InsuranceCard implements Serializable {
     private int cardNumber;
     private PolicyHolder policyHolder;
-    private Customer cardHolder; // Every customer has their one and only insurance card
-    private String policyOwner; // There is only one policy owner, which must be the policyholder customer
+    private Customer cardHolder;
+    private String policyOwner;
     private Date expirationDate;
 
     public InsuranceCard(int cardNumber, PolicyHolder policyHolder, Customer cardHolder, String policyOwner, Date expirationDate) {

@@ -34,20 +34,24 @@ public class AdminController implements Serializable {
                 return admin;
             }
         }
-        return null; // Return null if no policyholder is found
+        return null;
     }
 
-    // Add an admin into the system
+
     public void addAdmin(Admin admin) {
         admins.add(admin);
     }
 
-    // Method to authenticate admin logins
+
     public Admin authenticateAdmin(String username, String password) {
         return findAdmin(username, password);
     }
 
-    // Method to remove a user
+
+    public List<Admin> getAllAdmins() {
+        return new ArrayList<>(admins);
+    }
+
     public void removeUser(String customerID) {
         for (Customer customer : this.getAllCustomers()) {
             if (customer.getCustomerID().equals(customerID)) {
@@ -65,7 +69,7 @@ public class AdminController implements Serializable {
         }
     }
 
-    // Method to find a customer by ID
+
     public Customer findCustomer(String customerID) {
         for (Customer customer : this.getAllCustomers()) {
             if (customer.getCustomerID().equals(customerID)) {
@@ -75,12 +79,7 @@ public class AdminController implements Serializable {
         return null;
     }
 
-    // Method to get all admins
-    public List<Admin> getAdminList() {
-        return admins;
-    }
 
-    // Method to get all customers
     public List<Customer> getAllCustomers() {
         List<Customer> allCustomers = new ArrayList<>();
         allCustomers.addAll(policyHoldersController.getAllPolicyHolders());
@@ -88,36 +87,21 @@ public class AdminController implements Serializable {
         return allCustomers;
     }
 
-    // Method to get all policy holders
+
     public List<PolicyHolder> getAllPolicyHolders() {
         return policyHoldersController.getAllPolicyHolders();
     }
 
-    // Method to get all dependents
+
     public List<Dependent> getAllDependents() {
         return dependentsController.getAllDependents();
     }
 
-    // Create a new file for admins' data
-    private void createFileIfNotExists(String filePath) {
-        File file = new File(filePath);
 
-        if (!file.exists()) {
-            try {
-                if (file.createNewFile()) {
-                    System.out.println("File created: " + filePath);
-                } else {
-                    System.err.println("Error: Unable to create file " + filePath);
-                }
-            } catch (IOException e) {
-                System.err.println("Error: Unable to create file " + filePath);
-            }
-        }
-    }
 
-    // Method to serialize admins to file
+
+
     public void serializeAdminToFile(String filePath) {
-        createFileIfNotExists(filePath);
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(filePath);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)
@@ -131,7 +115,7 @@ public class AdminController implements Serializable {
         }
     }
 
-    // Method to read the admins' data
+
     public void deserializeAdminsFromFile(String filePath) {
         try (FileInputStream fileInputStream = new FileInputStream(filePath);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {

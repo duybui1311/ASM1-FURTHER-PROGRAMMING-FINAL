@@ -41,36 +41,7 @@ public class PolicyHolder extends Customer implements Serializable {
         this.claims = claims;
     }
 
-    public void updateDependentInfo(Dependent dependent, String fullName, InsuranceCard insuranceCard) {
-        dependent.setFullName(fullName);
-        dependent.setInsuranceCard(insuranceCard);
-    }
 
-    // Policyholder can renew a policy
-    public void renewPolicy(int years) {
-        // Get current expiration date
-        Date currentExpirationDate = getInsuranceCard().getExpirationDate();
-
-        // Calculate the new expiration date
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentExpirationDate);
-        calendar.add(Calendar.YEAR, years);
-        Date newExpirationDate = calendar.getTime();
-
-        // Update the expiration date of the insurance card
-        getInsuranceCard().setExpirationDate(newExpirationDate);
-    }
-
-    // Policyholder can also modify a policy
-    public void modifyPolicy(InsuranceCard newInsuranceCard) {
-        // Update the insurance card with the new details
-        setInsuranceCard(newInsuranceCard);
-    }
-
-    // View claim history
-    public List<Claim> viewClaimHistory() {
-        return getClaims();
-    }
 
     @Override
     public String toString() {

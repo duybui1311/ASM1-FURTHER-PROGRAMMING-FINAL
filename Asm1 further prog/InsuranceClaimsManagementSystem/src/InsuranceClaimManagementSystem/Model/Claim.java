@@ -2,7 +2,9 @@ package InsuranceClaimManagementSystem.Model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
 public class Claim implements Serializable {
     private String claimID;
     private Date claimDate;
@@ -103,4 +105,7 @@ public class Claim implements Serializable {
     public void setReceiverBankingInfo(String receiverBankingInfo) {
         this.receiverBankingInfo = receiverBankingInfo;
     }
+
+
+
 }

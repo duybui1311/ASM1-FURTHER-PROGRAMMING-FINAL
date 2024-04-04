@@ -32,7 +32,7 @@ public class PolicyHoldersController implements Serializable {
         return policyHolders;
     }
 
-    // Method to authenticate a policy holder's login
+
     public PolicyHolder authenticatePolicyHolder(String userID, String fullName) {
         PolicyHolder policyHolder = findPolicyHolder(userID, fullName);
         if (policyHolder != null) {
@@ -41,7 +41,7 @@ public class PolicyHoldersController implements Serializable {
         return policyHolder;
     }
 
-    // Find a policyholder by name and ID for login purpose
+
     public PolicyHolder findPolicyHolder(String policyHolderID, String fullName) {
         for (PolicyHolder policyHolder : policyHolders) {
             if (policyHolder.getCustomerID().equals(policyHolderID) && policyHolder.getFullName().equals(fullName)) {
@@ -60,26 +60,9 @@ public class PolicyHoldersController implements Serializable {
         return null;
     }
 
-    // Method to create a file if the targeted file does not exist during the serialize process
-    private void createFileIfNotExists(String filePath) {
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            try {
-                if (file.createNewFile()) {
-                    System.out.println("File created: " + filePath);
-                } else {
-                    System.err.println("Error: Unable to create file " + filePath);
-                }
-            } catch (IOException e) {
-                System.err.println("Error: Unable to create file " + filePath);
-            }
-        }
-    }
 
     // Method to serialize the policyholders into the system
     public void serializePolicyHoldersToFile(String filePath) {
-        createFileIfNotExists(filePath);
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(filePath);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)
@@ -115,22 +98,19 @@ public class PolicyHoldersController implements Serializable {
         }
     }
 
-    // Method to get the current policy holder user
+
     public PolicyHolder getCurrentPolicyHolder() {
         return currentPolicyHolder;
     }
 
-    // Method to set the current policy holder user
+
     public void setCurrentPolicyHolder(PolicyHolder currentPolicyHolder) {
         this.currentPolicyHolder = currentPolicyHolder;
     }
 
-    // Method to clear current policy holder when they log out
-    public void clearCurrentPolicyHolder() {
-        this.currentPolicyHolder = null;
-    }
 
-    // Add a policyholder to the list (might be usable if the application is upgraded)
+
+
     public void addPolicyHolder(PolicyHolder policyHolder) {
         policyHolders.add(policyHolder);
     }
@@ -140,7 +120,7 @@ public class PolicyHoldersController implements Serializable {
         policyHolders.remove(policyHolder);
     }
 
-    // Method to add a dependent into a policy holder's list
+
     public void addDependent(PolicyHolder currentPolicyHolder, Dependent dependent) {
         if (currentPolicyHolder != null) {
             currentPolicyHolder.addDependent(dependent);
@@ -171,7 +151,7 @@ public class PolicyHoldersController implements Serializable {
         }
     }
 
-    // Checks if a dependent exists
+
     public boolean dependentExists(String dependentID) {
         for (Dependent dependent : getAllDependents(currentPolicyHolder)) {
             if (dependent.getCustomerID().equals(dependentID)) {
@@ -181,7 +161,7 @@ public class PolicyHoldersController implements Serializable {
         return false;
     }
 
-    // Method to get a dependent by ID
+
     public Dependent getDependentByID(String dependentID) {
         Dependent dependent = null;
         for (Dependent d : getCurrentPolicyHolder().getDependents()) {
@@ -192,7 +172,7 @@ public class PolicyHoldersController implements Serializable {
         return dependent;
     }
 
-    // Allows policyholder to find a dependent by name
+
     public Optional<Dependent> getDependentByName(String dependentName) {
         for (Dependent dependent : getCurrentPolicyHolder().getDependents()) {
             if (dependent.getFullName().equalsIgnoreCase(dependentName)) {
@@ -202,7 +182,7 @@ public class PolicyHoldersController implements Serializable {
         return Optional.empty();
     }
 
-    // Method to get all dependents of a policy holder
+
     public List<Dependent> getAllDependents(PolicyHolder currentPolicyHolder) {
         return currentPolicyHolder.getDependents();
     }

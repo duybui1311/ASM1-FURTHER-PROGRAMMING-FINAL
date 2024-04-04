@@ -2,10 +2,13 @@
 
     import InsuranceClaimManagementSystem.Model.*;
     import InsuranceClaimManagementSystem.Controller.*;
+    import InsuranceClaimManagementSystem.util.DataGenerator;
+
     import java.util.ArrayList;
     import java.util.Comparator;
     import java.util.List;
     import java.util.Scanner;
+    import java.util.Date;
 
     public class AdminView {
         private final AdminController adminController = AdminController.getInstance();
@@ -458,22 +461,144 @@
             }
         }
 
+
         public void addClaimMenu() {
             // Implement the functionality to add a claim
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Adding a new claim:");
+
+            // Prompt the admin for claim details
+            System.out.print("Enter claim ID (format : f-xxxxxxxxxxad): ");
+            String claimID = scanner.nextLine();
+
+
+            // Prompt the admin for card number
+            System.out.print("Enter card number: ");
+            int cardNumber = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            // Prompt the admin for claim amount
+            System.out.print("Enter claim amount: ");
+            int claimAmount = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            // Prompt the admin for claim status
+            System.out.println("Select claim status:");
+            System.out.println("1. New");
+            System.out.println("2. Processing");
+            System.out.println("3. Done");
+            int statusChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+            Claim.Status status;
+            switch (statusChoice) {
+                case 1:
+                    status = Claim.Status.NEW;
+                    break;
+                case 2:
+                    status = Claim.Status.PROCESSING;
+                    break;
+                case 3:
+                    status = Claim.Status.DONE;
+                    break;
+                default:
+                    System.out.println("Invalid choice, setting status to New.");
+                    status = Claim.Status.NEW;
+            }
+
+
+            Date claimDate = DataGenerator.DateGenerator.generateDate(0);
+
+            String receiverBankingInfo = DataGenerator.BankGenerator.generateBankName();
+
+            List<String> documents = DataGenerator.DocumentGenerator.generateDocuments();
+
+
+
+            Claim newClaim = new Claim(claimID, claimDate, null, cardNumber, claimDate, documents, claimAmount, status, receiverBankingInfo);
+
+            // Add the claim using the claims controller
+            claimsController.addClaim(newClaim);
+
+            System.out.println("Claim added successfully!");
         }
 
         public void updateClaimMenu() {
-            // Implement the functionality to update a claim
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Update a Claim:");
+            System.out.print("Enter the claim ID to update: ");
+            String claimID = scanner.nextLine();
+
+
+            Claim claimToUpdate = claimsController.getClaimByID(claimID);
+
+            if (claimToUpdate != null) {
+
+                System.out.print("Enter new card number: ");
+                int newCardNumber = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.print("Enter new claim amount: ");
+                int newClaimAmount = scanner.nextInt();
+                scanner.nextLine();
+
+
+                claimToUpdate.setCardNumber(newCardNumber);
+                claimToUpdate.setClaimAmount(newClaimAmount);
+
+
+                claimsController.updateClaim(claimToUpdate);
+
+                System.out.println("Claim updated successfully.");
+            } else {
+                System.out.println("Claim not found with ID: " + claimID);
+            }
         }
 
         public void removeClaimMenu() {
-            // Implement the functionality to remove a claim
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Remove a Claim:");
+            System.out.print("Enter the claim ID to remove: ");
+            String claimID = scanner.nextLine();
+
+
+            boolean claimExists = claimsController.claimExits(claimID);
+
+            if (claimExists) {
+                claimsController.deleteClaim(claimID);
+                System.out.println("Claim removed successfully.");
+            } else {
+                System.out.println("Claim not found with ID: " + claimID);
+            }
         }
 
         public void viewClaimMenu() {
-            // Implement the functionality to view a specific claim
-        }
+            Scanner scanner = new Scanner(System.in);
 
+            System.out.println("View a Specific Claim:");
+            System.out.print("Enter the claim ID: ");
+            String claimID = scanner.nextLine();
+
+            // Get the claim by ID
+            Claim claim = claimsController.getAClaim(claimID);
+
+            if (claim != null) {
+                // Display the claim details
+                System.out.println("Claim ID: " + claim.getClaimID());
+                System.out.println("Claim Date: " + claim.getClaimDate());
+                System.out.println("Insured Person: " + claim.getInsuredPerson());
+                System.out.println("Card Number: " + claim.getCardNumber());
+                System.out.println("Exam Date: " + claim.getExamDate());
+                System.out.println("Documents: " + claim.getDocuments());
+                System.out.println("Claim Amount: " + claim.getClaimAmount());
+                System.out.println("Status: " + claim.getStatus());
+                System.out.println("Receiver Banking Info: " + claim.getReceiverBankingInfo());
+            } else {
+                System.out.println("Claim not found with ID: " + claimID);
+            }
+        }
 
         public void viewAllClaimsMenu() {
             System.out.println("----------------------------------");
@@ -596,7 +721,6 @@
 
             if (confirmation.equalsIgnoreCase("yes")) {
                 claimsController.serializeClaimsToFile("Data/claims.dat");
-                claimsController.saveClaimsToTextFile("Data/claims.txt");
                 System.out.println("Claim status has been updated successfully.");
             } else {
                 System.out.println("Procedure has been canceled.");
@@ -617,7 +741,7 @@
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline character
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -678,12 +802,9 @@
             int cardNumber = scanner.nextInt();
             scanner.nextLine(); // Consume newline character
 
-            // You may prompt for additional details such as policy holder, card holder, expiration date, etc.
-
-            // Create a new InsuranceCard object with the provided details
             InsuranceCard newInsuranceCard = new InsuranceCard(cardNumber, null, null, null, null);
 
-            // Call the corresponding function in the controller to add the new insurance card
+
             insuranceCardController.addInsuranceCard(newInsuranceCard);
 
             System.out.println("New insurance card added successfully.");
@@ -720,10 +841,6 @@
                 // Prompt the user to enter the new details for the insurance card
                 System.out.println("Enter the new details for the insurance card:");
 
-                // You may prompt for additional details such as policy holder, card holder, expiration date, etc.
-
-                // Update the insurance card with the new details
-                // insuranceCard.setXXX(newXXX);
 
                 // Call the corresponding function in the controller to update the insurance card
                 insuranceCardController.updateInsuranceCard(insuranceCard);
@@ -733,5 +850,4 @@
                 System.out.println("Insurance card with card number " + cardNumber + " not found.");
             }
         }
-
     }
