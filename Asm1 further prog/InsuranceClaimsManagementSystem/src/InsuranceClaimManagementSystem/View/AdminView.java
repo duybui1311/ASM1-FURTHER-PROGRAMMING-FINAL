@@ -19,7 +19,7 @@ public class AdminView {
     // Authenticate admins' login menu
     public void authenticateAdmins() {
         while (true) {
-            adminController.deserializeAdminsFromFile("data/admins.dat");
+            adminController.deserializeAdminsFromFile("InsuranceClaimManagementSystem/Data/admins.dat");
             System.out.println("This is the login page for admins");
             System.out.println("Enter your username:");
             String username = scanner.nextLine();
@@ -33,10 +33,10 @@ public class AdminView {
                 System.out.println("Login successful!");
 
                 // Deserialize all data in the system
-                policyHoldersController.deserializePolicyHoldersFromFile("data/policyholders.dat");
-                dependentsController.deserializeAllDependents("data/dependents.dat");
-                insuranceCardController.deserializeInsuranceCardsFromFile("data/insuranceCards.dat");
-                claimsController.deserializeAllClaimsFromFile("data/claims.dat");
+                policyHoldersController.deserializePolicyHoldersFromFile("InsuranceClaimManagementSystem/Data/policyholders.dat");
+                dependentsController.deserializeAllDependents("InsuranceClaimManagementSystem/Data/dependents.dat");
+                insuranceCardController.deserializeInsuranceCardsFromFile("InsuranceClaimManagementSystem/Data/insuranceCards.dat");
+                claimsController.deserializeAllClaimsFromFile("InsuranceClaimManagementSystem/Data/claims.dat");
 
                 menu(); // Proceed to main menu
                 return; // Exit the method
@@ -250,7 +250,7 @@ public class AdminView {
         policyHoldersController.addPolicyHolder(newPolicyHolder);
 
         // Serialize the updated list of policy holders to file
-        policyHoldersController.serializePolicyHoldersToFile("data/policyholders.dat");
+        policyHoldersController.serializePolicyHoldersToFile("InsuranceClaimManagementSystem/Data/policyholders.dat");
 
         System.out.println("New policy holder with ID " + newPolicyHolderID + " and insurance card number " + newPolicyHolderInsuranceCard.getCardNumber() + " has been created.");
         this.manageCustomers(); // Return to manage customers menu
@@ -293,8 +293,8 @@ public class AdminView {
         policyHolder.setDependents(updatedDependents);
 
         // Serialize the updated list of dependents and policy holder to file
-        dependentsController.serializeDependentsToFile("data/dependents.dat");
-        policyHoldersController.serializePolicyHoldersToFile("data/policyholders.dat");
+        dependentsController.serializeDependentsToFile("InsuranceClaimManagementSystem/Data/dependents.dat");
+        policyHoldersController.serializePolicyHoldersToFile("InsuranceClaimManagementSystem/Data/policyholders.dat");
 
         System.out.println("New dependent with ID " + newDependentID + " has been added to the policy holder.");
     }
@@ -501,8 +501,8 @@ public class AdminView {
         String confirmation = scanner.nextLine();
 
         if (confirmation.equalsIgnoreCase("yes")) {
-            claimsController.serializeClaimsToFile("data/claims.dat");
-            claimsController.saveClaimsToTextFile("data/claims.txt");
+            claimsController.serializeClaimsToFile("InsuranceClaimManagementSystem/Data/claims.dat");
+            claimsController.saveClaimsToTextFile("InsuranceClaimManagementSystem/Data/claims.txt");
             System.out.println("Claim has been updated successfully.");
         } else {
             System.out.println("Procedure has been canceled.");

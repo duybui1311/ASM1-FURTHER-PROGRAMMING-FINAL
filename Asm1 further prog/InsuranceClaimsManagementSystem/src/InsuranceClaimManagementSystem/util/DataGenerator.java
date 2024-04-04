@@ -3,7 +3,8 @@ package InsuranceClaimManagementSystem.util;
 import InsuranceClaimManagementSystem.Controller.*;
 import InsuranceClaimManagementSystem.Model.*;
 import InsuranceClaimManagementSystem.View.AdminView;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class DataGenerator {
@@ -155,7 +156,7 @@ public class DataGenerator {
         Date claimDate = generateClaimDate(index);
         int cardNumber = customer.getInsuranceCard().getCardNumber();
         Date examDate = new Date();
-        List<String> documents = generateRandomDocuments();
+        List<String> documents = generateDocuments();
         int claimAmount = (int) (Math.random() * 1000);
         Claim.Status status = Claim.Status.NEW;
         String receiverBankingInfo;
@@ -182,9 +183,24 @@ public class DataGenerator {
         calendar.add(Calendar.DAY_OF_YEAR, daysToAdd);
         return calendar.getTime();
     }
-    private static List<String> generateRandomDocuments() {
+    private static List<String> generateDocuments() {
         List<String> documents = new ArrayList<>();
-        String[] documentTypes = {"Insurance Card", "Doctor's Prescription", "Police Report", "Proof of Loss", "Medical Records", "Witness Statements",};
+        String[] documentTypes = {
+                "Insurance Card",
+                "Doctor's Prescription",
+                "Police Report",
+                "Proof of Loss",
+                "Medical Records",
+                "Witness Statements",
+                "Claim Form",
+                "Hospital Bills",
+                "Photographs",
+                "Treatment Plan",
+                "Diagnostic Reports",
+                "Receipts",
+                "Witness Testimonies",
+                "Expert Opinions",
+        };
         Random random = new Random();
         for (int i = 0; i < 2; i++) {
             int index = random.nextInt(documentTypes.length);
@@ -194,7 +210,22 @@ public class DataGenerator {
     }
 
     private record BankingInfoGenerator(Claim claim) {
-        private static final String[] BANK_NAME = {"VP Bank", "Vietcombank", "Techcombank", "MB Bank", "BIDV", "SHB"};
+        private static final String[] BANK_NAME = {
+                "VP Bank",
+                "Vietcombank",
+                "Techcombank",
+                "MB Bank",
+                "BIDV",
+                "SHB",
+                "ACB",
+                "VietinBank",
+                "Agribank",
+                "Sacombank",
+                "TPBank",
+                "Viet Capital Bank",
+                "SeABank",
+                "VietBank",
+        };
 
         public String getClaimantName() {
             return claim.getInsuredPerson().getFullName();
@@ -224,11 +255,16 @@ public class DataGenerator {
 
 
     private static void serializeData(AdminController adminController, PolicyHoldersController policyHoldersController, InsuranceCardController insuranceCardController, DependentsController dependentsController, ClaimsController claimsController) {
-        adminController.serializeAdminToFile("data/admins.dat");
-        policyHoldersController.serializePolicyHoldersToFile("data/policyholders.dat");
-        dependentsController.serializeDependentsToFile("data/dependents.dat");
-        insuranceCardController.serializeInsuranceCardsToFile("data/insuranceCards.dat");
-        claimsController.serializeClaimsToFile("data/claims.dat");
+        try {
+            createDirectoryIfNotExists("InsuranceClaimManagementSystem/Data");
+            adminController.serializeAdminToFile("InsuranceClaimManagementSystem/Data/admins.dat");
+            policyHoldersController.serializePolicyHoldersToFile("InsuranceClaimManagementSystem/Data/policyholders.dat");
+            dependentsController.serializeDependentsToFile("InsuranceClaimManagementSystem/Data/dependents.dat");
+            insuranceCardController.serializeInsuranceCardsToFile("InsuranceClaimManagementSystem/Data/insuranceCards.dat");
+            claimsController.serializeClaimsToFile("InsuranceClaimManagementSystem/Data/claims.dat");
+        } catch (IOException e) {
+            System.err.println("Error occurred while serializing data: " + e.getMessage());
+        }
     }
 
     private static void deserializeAndPrintData(AdminController adminController, PolicyHoldersController policyHoldersController, DependentsController dependentsController, InsuranceCardController insuranceCardController, ClaimsController claimsController) {
@@ -243,15 +279,12 @@ public class DataGenerator {
         for (Admin admin : adminController.getAdminList()) {
             System.out.println("Username: " + admin.getUsername());
             System.out.println("Password: " + admin.getPassword());
-
         }
 
         System.out.println("All policy holders:");
         for (PolicyHolder policyHolder : policyHoldersController.getAllPolicyHolders()) {
             System.out.println(policyHolder);
             System.out.println("Dependents:");
-
-            // Get dependents for the current policy holder
             List<Dependent> dependents = policyHoldersController.getAllDependents(policyHolder);
             for (Dependent dependent : dependents) {
                 System.out.println(dependent);
@@ -259,12 +292,10 @@ public class DataGenerator {
             System.out.println();
         }
 
-
         System.out.println("All dependents: ");
         for (Dependent dependent : dependentsController.getAllDependents()) {
             System.out.println(dependent);
         }
-
 
         System.out.println("All insurance cards:");
         for (InsuranceCard insuranceCard : insuranceCardController.getInsuranceCards()) {
@@ -276,6 +307,14 @@ public class DataGenerator {
         adminView.viewClaims();
     }
 
+    private static void createDirectoryIfNotExists(String directoryPath) throws IOException {
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                throw new IOException("Failed to create directory: " + directoryPath);
+            }
+        }
+    }
     public static class NameGenerator {
         private static final String[] FIRST_NAMES = {"Hai", "Nghia", "Mai", "Dat", "Josh", "David", "Son", "Duy", "Thao", "Ha"};
         private static final String [] LAST_NAMES = {"Tran", "Pham", "Nguyen", "Bui", "Luu", "Do","Sins","James","Bryant"};
