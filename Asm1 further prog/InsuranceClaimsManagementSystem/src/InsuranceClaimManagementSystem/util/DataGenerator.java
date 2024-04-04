@@ -17,7 +17,7 @@ public class DataGenerator {
         ClaimsController claimsController = ClaimsController.getInstance();
 
         // Generate sample data
-        generateSampleData(policyHoldersController, insuranceCardController, dependentsController, adminController);
+        generatedata(policyHoldersController, insuranceCardController, dependentsController, adminController);
 
         // Generate claims for existing customers
         List<PolicyHolder> policyHolders = new ArrayList<>(policyHoldersController.getAllPolicyHolders());
@@ -43,7 +43,7 @@ public class DataGenerator {
         deserializeAndPrintData(adminController, policyHoldersController, dependentsController, insuranceCardController, claimsController);
     }
 
-    private static void generateSampleData(PolicyHoldersController policyHoldersController, InsuranceCardController insuranceCardController, DependentsController dependentsController, AdminController adminController) {
+    private static void generatedata(PolicyHoldersController policyHoldersController, InsuranceCardController insuranceCardController, DependentsController dependentsController, AdminController adminController) {
         // Generate sample admins
         Admin admin1 = new Admin("13112004", "Duy Bui", "123456");
         Admin admin2 = new Admin("111111", "admin", "123456");
@@ -319,7 +319,7 @@ public class DataGenerator {
         }
 
         AdminView adminView = new AdminView();
-        adminView.viewClaims();
+
     }
 
 }

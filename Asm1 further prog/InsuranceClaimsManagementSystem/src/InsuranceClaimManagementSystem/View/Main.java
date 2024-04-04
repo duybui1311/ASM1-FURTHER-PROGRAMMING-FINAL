@@ -1,15 +1,21 @@
 package InsuranceClaimManagementSystem.View;
 
+import InsuranceClaimManagementSystem.util.DataGenerator;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in); // Initialize the Scanner object
+
+        // Generate sample data
+        DataGenerator.main(new String[]{});
 
         // Welcome message
-        System.out.println("=============================================================== WELCOME TO INSURANCE CLAIMS MANAGEMENT SYSTEM! ===============================================================");
+        System.out.println("=============================================================== WELCOME TO DUY BUI'S INSURANCE CLAIMS MANAGEMENT SYSTEM! ===============================================================");
+
+        // Main menu
         while (true) {
-            System.out.println("Please login (enter '0' to cancel): ");
+            System.out.println("\nPlease login ");
             System.out.println("1. Login as Admin");
             System.out.println("Enter your choice: ");
             int choice = scanner.nextInt();
@@ -21,7 +27,8 @@ public class Main {
                     AdminView adminView = new AdminView();
                     adminView.adminLogin();
                 }
-                }
+                default -> System.err.println("Invalid input. Please try again.");
             }
         }
     }
+}

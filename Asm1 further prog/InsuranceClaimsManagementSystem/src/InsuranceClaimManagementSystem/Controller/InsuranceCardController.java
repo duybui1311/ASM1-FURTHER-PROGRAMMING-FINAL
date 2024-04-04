@@ -112,4 +112,45 @@ public class InsuranceCardController implements Serializable {
             System.err.println("Error: Cannot add a null insurance card");
         }
     }
+    public List<InsuranceCard> getAllInsuranceCards() {
+        // Assuming you have a list of insurance cards stored in a property called "insuranceCards"
+        return insuranceCards;
+    }
+    // Method to remove an insurance card by card number
+    public void removeInsuranceCard(int cardNumber) {
+        InsuranceCard cardToRemove = null;
+        for (InsuranceCard insuranceCard : insuranceCards) {
+            if (insuranceCard.getCardNumber() == cardNumber) {
+                cardToRemove = insuranceCard;
+                break;
+            }
+        }
+        if (cardToRemove != null) {
+            insuranceCards.remove(cardToRemove);
+            System.out.println("Insurance card with card number " + cardNumber + " has been removed.");
+        } else {
+            System.out.println("Insurance card with card number " + cardNumber + " not found.");
+        }
+    }
+    // Method to get an insurance card by card number
+    public InsuranceCard getInsuranceCardByNumber(int cardNumber) {
+        for (InsuranceCard insuranceCard : insuranceCards) {
+            if (insuranceCard.getCardNumber() == cardNumber) {
+                return insuranceCard;
+            }
+        }
+        return null; // If no matching card number is found
+    }
+    // Method to update an insurance card
+    public void updateInsuranceCard(InsuranceCard updatedInsuranceCard) {
+        for (int i = 0; i < insuranceCards.size(); i++) {
+            InsuranceCard insuranceCard = insuranceCards.get(i);
+            if (insuranceCard.getCardNumber() == updatedInsuranceCard.getCardNumber()) {
+                insuranceCards.set(i, updatedInsuranceCard); // Update the insurance card in the list
+                System.out.println("Insurance card with card number " + updatedInsuranceCard.getCardNumber() + " has been updated.");
+                return;
+            }
+        }
+        System.err.println("Error: Insurance card with card number " + updatedInsuranceCard.getCardNumber() + " not found.");
+    }
 }

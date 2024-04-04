@@ -161,8 +161,8 @@ public class ClaimView {
                 // Add the claim to the controller
                 claimsController.addClaim(claim);
                 System.out.println("Claim submitted successfully!");
-                claimsController.serializeClaimsToFile("data/claims.dat"); // Serialize the claim
-                claimsController.saveClaimsToTextFile("data/claims.txt"); // Save the claim as a text file
+                claimsController.serializeClaimsToFile("Data/claims.dat"); // Serialize the claim
+                claimsController.saveClaimsToTextFile("Data/claims.txt"); // Save the claim as a text file
                 return;
 
             } else if (confirmation.equalsIgnoreCase("no")) {
