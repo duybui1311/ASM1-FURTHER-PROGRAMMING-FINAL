@@ -28,10 +28,6 @@ public class CustomersController implements Serializable {
         this.customers = new ArrayList<>();
     }
 
-    public ArrayList<Customer> getCustomers() {
-        return customers;
-    }
-
     public Customer findCustomerByID(String customerID) {
         for (Customer customer : customers) {
             if (customer.getCustomerID().equals(customerID)) {
@@ -40,9 +36,4 @@ public class CustomersController implements Serializable {
         }
         return null;
     }
-
-    public void setCustomers(ArrayList<Customer> customers) {
-        this.customers = customers;
-    }
 }
-

@@ -469,7 +469,7 @@
             System.out.println("Adding a new claim:");
 
             // Prompt the admin for claim details
-            System.out.print("Enter claim ID (format : f-xxxxxxxxxxad): ");
+            System.out.print("Enter claim ID (format : f-xxxxxxxxxx): ");
             String claimID = scanner.nextLine();
 
 
@@ -506,16 +506,29 @@
                     status = Claim.Status.NEW;
             }
 
+            System.out.print("Enter the number of documents associated with the claim: ");
+            int numDocuments = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            List<String> documents = new ArrayList<>();
+            for (int i = 0; i < numDocuments; i++) {
+                // Prompt the user to enter each document name
+                System.out.print("Enter document name " + (i + 1) + ": ");
+                String documentName = scanner.nextLine();
+                // Add document to the list
+                documents.add(documentName);
+            }
 
             Date claimDate = DataGenerator.DateGenerator.generateDate(0);
 
-            String receiverBankingInfo = DataGenerator.BankGenerator.generateBankName();
+            System.out.print("Enter receiver bank name: ");
+            String bankName = scanner.nextLine();
 
-            List<String> documents = DataGenerator.DocumentGenerator.generateDocuments();
+            String accountHolderName = DataGenerator.NameGenerator.generateFullName();
 
+            String accountNumber = DataGenerator.BankGenerator.generateAccountNumber();
 
-
-            Claim newClaim = new Claim(claimID, claimDate, null, cardNumber, claimDate, documents, claimAmount, status, receiverBankingInfo);
+            Claim newClaim = new Claim(claimID, claimDate, null, cardNumber, claimDate, documents, claimAmount, status, bankName, accountHolderName,accountNumber);
 
             // Add the claim using the claims controller
             claimsController.addClaim(newClaim);
@@ -581,11 +594,9 @@
             System.out.print("Enter the claim ID: ");
             String claimID = scanner.nextLine();
 
-            // Get the claim by ID
             Claim claim = claimsController.getAClaim(claimID);
 
             if (claim != null) {
-                // Display the claim details
                 System.out.println("Claim ID: " + claim.getClaimID());
                 System.out.println("Claim Date: " + claim.getClaimDate());
                 System.out.println("Insured Person: " + claim.getInsuredPerson());
@@ -594,7 +605,10 @@
                 System.out.println("Documents: " + claim.getDocuments());
                 System.out.println("Claim Amount: " + claim.getClaimAmount());
                 System.out.println("Status: " + claim.getStatus());
-                System.out.println("Receiver Banking Info: " + claim.getReceiverBankingInfo());
+                System.out.println("Receiver Banking Information:");
+                System.out.println("Bank Name: " + claim.getBankName());
+                System.out.println("Account Holder's Name: " + claim.getAccountHolderName());
+                System.out.println("Account Number: " + claim.getAccountNumber());
             } else {
                 System.out.println("Claim not found with ID: " + claimID);
             }
@@ -658,74 +672,16 @@
 
         private void displayClaimsHeader() {
             System.out.printf("%-13s | %-12s | %-20s | %-30s | %-15s | %-12s | %-30s | %-15s | %-15s\n",
-                    "ID", "Date", "Insured Person", "Banking Info", "Card Number", "Exam Date", "Documents", "Claim Amount", "Status");
+                    "ID", "Date", "Insured Person", "Bank name", "Card Number", "Exam Date", "Documents", "Claim Amount", "Status");
         }
 
         private void displayClaimInfo(Claim claim) {
             System.out.printf("%-13s | %-12s | %-20s | %-30s | %-15s | %-12s | %-30s | %-15s | %-15s\n",
-                    claim.getClaimID(), claim.getClaimDate(), claim.getInsuredPerson(), claim.getReceiverBankingInfo(),
+                    claim.getClaimID(), claim.getClaimDate(), claim.getInsuredPerson(), claim.getBankName(),
                     claim.getCardNumber(), claim.getExamDate(), claim.getDocuments(),
                     claim.getClaimAmount() + "$", claim.getStatus());
         }
 
-        public void displayClaimDetails(String claimID) {
-            Claim claim = claimsController.getClaimByID(claimID);
-            if (claim != null) {
-                System.out.println("----------------------------------");
-                System.out.println("         Claim Details            ");
-                System.out.println("----------------------------------");
-                displayClaimInfo(claim);
-            } else {
-                System.err.println("The claim with ID " + claimID + " does not exist.");
-            }
-        }
-
-        public void modifyClaimStatusMenu() {
-            System.out.println("----------------------------------");
-            System.out.println("        Modify Claim Status        ");
-            System.out.println("----------------------------------");
-
-            System.out.print("Enter the ID of the claim you want to modify: ");
-            String claimID = scanner.nextLine();
-            Claim claimToEdit = claimsController.getClaimByID(claimID);
-
-            if (claimToEdit == null) {
-                System.out.println("Claim not found. Please try again.");
-                return;
-            }
-
-            System.out.println("Current claim details:");
-            displayClaimDetails(claimID);
-
-            System.out.println("Select the new status of this claim:");
-            System.out.println("1. PROCESSING");
-            System.out.println("2. DONE");
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (choice) {
-                case 1:
-                    claimToEdit.setStatus(Claim.Status.PROCESSING);
-                    break;
-                case 2:
-                    claimToEdit.setStatus(Claim.Status.DONE);
-                    break;
-                default:
-                    System.err.println("Invalid input. Please try again.");
-                    return;
-            }
-
-            System.out.print("Do you want to save this change? (yes/no): ");
-            String confirmation = scanner.nextLine();
-
-            if (confirmation.equalsIgnoreCase("yes")) {
-                claimsController.serializeClaimsToFile("Data/claims.dat");
-                System.out.println("Claim status has been updated successfully.");
-            } else {
-                System.out.println("Procedure has been canceled.");
-            }
-        }
 
         public void manageInsuranceCardsMenu() {
             System.out.println("----------------------------------");

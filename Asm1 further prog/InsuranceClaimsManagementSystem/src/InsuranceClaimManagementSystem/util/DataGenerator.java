@@ -116,18 +116,26 @@ public class DataGenerator {
         Claim.Status status = Claim.Status.NEW;
         String receiverBankingInfo;
 
-        Claim claim = new Claim(claimID, claimDate, customer, cardNumber, examDate, documents, claimAmount, status, null);
+        // Generate banking information using the generateBank class
+        generateBank bankGenerator = new generateBank();
+        String bankName = bankGenerator.generateBankName();
+        String claimantName = NameGenerator.generateFullName();
+        String accountNumber = bankGenerator.generateBankNumber(generateBank.generateBankName(),claimantName);
 
+        Claim claim = new Claim(claimID, claimDate, customer, cardNumber, examDate, documents, claimAmount, status, bankName, claimantName, accountNumber);
 
-        generateBank bankingInfoGenerator = new generateBank(claim);
-        String bankName =generateBank.BANK_NAME[new Random().nextInt(generateBank.BANK_NAME.length)];
-        String claimantName = bankingInfoGenerator.getClaimantName();
-        receiverBankingInfo = bankingInfoGenerator.generateBankNumber(bankName, claimantName);
+        // Set the banking information
+        claim.setBankName(bankName);
+        claim.setAccountHolderName(claimantName);
+        claim.setAccountNumber(accountNumber);
 
-        // Update the claim with banking info
-        claim.setReceiverBankingInfo(receiverBankingInfo);
         return claim;
     }
+
+
+
+
+
 
     private static Date generateDate(int index) {
         Calendar calendar = Calendar.getInstance();
@@ -165,7 +173,8 @@ public class DataGenerator {
         return documents;
     }
 
-    private record generateBank(Claim claim) {
+
+    private record generateBank() {
         private static final String[] BANK_NAME = {
                 "VP Bank",
                 "Vietcombank",
@@ -183,10 +192,10 @@ public class DataGenerator {
                 "VietBank",
         };
 
-        public String getClaimantName() {
-            return claim.getInsuredPerson().getFullName();
+        public static String generateBankName() {
+            Random random = new Random();
+            return BANK_NAME[random.nextInt(BANK_NAME.length)];
         }
-
         public String generateBankNumber(String bankName, String claimantName) {
             Random random = new Random();
 
@@ -206,7 +215,6 @@ public class DataGenerator {
             return bankNumber.toString();
         }
     }
-
 
 
     public class NameGenerator {
@@ -252,6 +260,15 @@ public class DataGenerator {
     }
 
     public class BankGenerator {
+        public static String generateAccountNumber() {
+
+            StringBuilder accountNumber = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < 10; i++) {
+                accountNumber.append(random.nextInt(10));
+            }
+            return accountNumber.toString();
+        }
         private static final String[] BANK_NAME = {
                 "VP Bank",
                 "Vietcombank",

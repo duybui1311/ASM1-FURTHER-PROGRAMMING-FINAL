@@ -46,14 +46,8 @@ public class DependentsController implements Serializable {
         return null;
     }
 
-    // Method to get all dependents in the system
     public List<Dependent> getAllDependents() {
         return dependents;
-    }
-
-
-    public PolicyHolder getPolicyOwner(Dependent dependent) {
-        return dependent.getPolicyHolder();
     }
 
 
@@ -91,7 +85,6 @@ public class DependentsController implements Serializable {
     }
 
 
-    // Method to deserialize ALL dependents in the system (used for DependentView)
     public void deserializeAllDependents(String filePath) {
         try (FileInputStream fileInputStream = new FileInputStream(filePath);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {

@@ -2,9 +2,7 @@ package InsuranceClaimManagementSystem.Model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 public class Claim implements Serializable {
     private String claimID;
     private Date claimDate;
@@ -14,9 +12,11 @@ public class Claim implements Serializable {
     private List<String> documents;
     private int claimAmount;
     private Status status;
-    private String receiverBankingInfo;
+    private String bankName;
+    private String accountHolderName;
+    private String accountNumber;
 
-    public Claim(String claimID, Date claimDate, Customer insuredPerson, int cardNumber, Date examDate, List<String> documents, int claimAmount, Status status, String receiverBankingInfo) {
+    public Claim(String claimID, Date claimDate, Customer insuredPerson, int cardNumber, Date examDate, List<String> documents, int claimAmount, Status status, String bankName, String accountHolderName, String accountNumber) {
         this.claimID = claimID;
         this.claimDate = claimDate;
         this.insuredPerson = insuredPerson;
@@ -25,8 +25,11 @@ public class Claim implements Serializable {
         this.documents = documents;
         this.claimAmount = claimAmount;
         this.status = status;
-        this.receiverBankingInfo = receiverBankingInfo;
+        this.bankName = bankName;
+        this.accountHolderName = accountHolderName;
+        this.accountNumber = accountNumber;
     }
+
 
     public enum Status {
         NEW,
@@ -86,6 +89,30 @@ public class Claim implements Serializable {
         return claimAmount;
     }
 
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public void setAccountHolderName(String accountHolderName) {
+        this.accountHolderName = accountHolderName;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public String getAccountHolderName() {
+        return accountHolderName;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
     public void setClaimAmount(int claimAmount) {
         this.claimAmount = claimAmount;
     }
@@ -97,15 +124,6 @@ public class Claim implements Serializable {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-    public String getReceiverBankingInfo() {
-        return receiverBankingInfo;
-    }
-
-    public void setReceiverBankingInfo(String receiverBankingInfo) {
-        this.receiverBankingInfo = receiverBankingInfo;
-    }
-
 
 
 }
