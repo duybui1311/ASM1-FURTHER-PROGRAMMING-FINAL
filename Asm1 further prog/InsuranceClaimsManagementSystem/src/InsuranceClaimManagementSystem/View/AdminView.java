@@ -781,16 +781,16 @@
             System.out.println("Insurance card with card number " + cardNumber + " has been removed.");
         }
 
-        // Function to modify insurance card details
+
         private void modifyInsuranceCardDetails() {
             System.out.println("Modifying Insurance Card Details");
 
             // Prompt the user to enter the card number of the insurance card to modify
             System.out.println("Enter the card number of the insurance card to modify:");
             int cardNumber = scanner.nextInt();
-            scanner.nextLine(); // Consume newline character
+            scanner.nextLine();
 
-            // Call the corresponding function in the controller to retrieve the insurance card
+
             InsuranceCard insuranceCard = insuranceCardController.getInsuranceCardByNumber(cardNumber);
 
             if (insuranceCard != null) {

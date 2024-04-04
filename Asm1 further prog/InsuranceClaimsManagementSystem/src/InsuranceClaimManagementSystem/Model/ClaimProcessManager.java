@@ -7,5 +7,8 @@ public interface ClaimProcessManager {
     void updateClaim(Claim claim);
     void deleteClaim(String claimID);
     Claim getAClaim(String claimID);
+
+    List<Claim> getAClaims();
+
     List<Claim> getClaims();
 }

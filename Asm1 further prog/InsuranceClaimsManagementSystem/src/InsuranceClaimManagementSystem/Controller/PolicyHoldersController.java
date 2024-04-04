@@ -61,7 +61,7 @@ public class PolicyHoldersController implements Serializable {
     }
 
 
-    // Method to serialize the policyholders into the system
+
     public void serializePolicyHoldersToFile(String filePath) {
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(filePath);
