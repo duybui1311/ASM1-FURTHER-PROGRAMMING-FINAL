@@ -33,7 +33,7 @@ public class InsuranceCardController implements Serializable {
         return insuranceCards;
     }
 
-    // Method to create a new insurance card
+
     public InsuranceCard generateInsuranceCard(Customer cardHolder, PolicyHolder policyHolder, String policyOwner) {
         int cardNumber = generateCardNumber();
         Date expirationDate = getDefaultExpirationDate();
@@ -43,7 +43,7 @@ public class InsuranceCardController implements Serializable {
     }
 
 
-    // Method to generate a random card number
+
     private int generateCardNumber() {
         long randomNumber = (long) (Math.random() * 9_000_000_000L) + 1_000_000_000L;
         return (int) (randomNumber % Integer.MAX_VALUE);

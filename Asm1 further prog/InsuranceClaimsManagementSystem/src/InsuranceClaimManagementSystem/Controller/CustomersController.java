@@ -21,7 +21,7 @@ public class CustomersController implements Serializable {
         return instance;
     }
 
-    // Method to generate a new user ID
+
     public String generateUserID() {
         lastUserID++;
         return "c-" + String.format("%07d", lastUserID);
