@@ -223,7 +223,7 @@ public class DataGenerator {
     public class NameGenerator {
         private static final Random random = new Random();
 
-        private static final String[] firstNames = {"John", "Emma", "Michael", "David", "William", "Mai", "Nghia", "Son", "Hai", "Duy", "Tri", "Ha", "Phanh", "Hoe","Hai Minh","Thao"};
+        private static final String[] firstNames = {"John", "Emma", "Michael", "David","Ngoc Ha", "Mai", "Nghia", "Son", "Hai", "Duy", "Tri", "Ha", "Phanh", "Hoe","Hai Minh","Thao"};
         private static final String[] lastNames = {"Smith", "Johnson", "Williams", "Jones", "Sins", "Tran", "Miller", "Wilson", "Moore", "Taylor","Nguyen", "Tran","Bui"};
 
         public static String generateFullName() {
