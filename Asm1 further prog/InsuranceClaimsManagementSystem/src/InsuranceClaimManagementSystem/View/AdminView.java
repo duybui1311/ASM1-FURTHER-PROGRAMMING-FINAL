@@ -1,3 +1,6 @@
+/**
+ * @author <Bui Cong Duy - s3978546>
+ */
     package InsuranceClaimManagementSystem.View;
 
     import InsuranceClaimManagementSystem.Model.*;

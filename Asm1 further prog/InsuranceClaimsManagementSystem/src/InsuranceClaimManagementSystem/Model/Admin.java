@@ -1,4 +1,7 @@
-    package InsuranceClaimManagementSystem.Model;
+/**
+ * @author <Bui Cong Duy - s3978546>
+ */
+package InsuranceClaimManagementSystem.Model;
 
     import java.io.Serializable;
     import java.util.List;
