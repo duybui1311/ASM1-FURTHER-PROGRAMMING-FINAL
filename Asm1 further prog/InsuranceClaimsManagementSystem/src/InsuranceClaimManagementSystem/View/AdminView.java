@@ -593,28 +593,31 @@
         public void viewClaimMenu() {
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println("View a Specific Claim:");
-            System.out.print("Enter the claim ID: ");
+            System.out.println("+--------------+---------------------------------------+");
+            System.out.println("|    Field     |               Information               |");
+            System.out.println("+--------------+---------------------------------------+");
+
+            System.out.print("| Claim ID     | ");
             String claimID = scanner.nextLine();
 
             Claim claim = claimsController.getAClaim(claimID);
 
             if (claim != null) {
-                System.out.println("Claim ID: " + claim.getClaimID());
-                System.out.println("Claim Date: " + claim.getClaimDate());
-                System.out.println("Insured Person: " + claim.getInsuredPerson());
-                System.out.println("Card Number: " + claim.getCardNumber());
-                System.out.println("Exam Date: " + claim.getExamDate());
-                System.out.println("Documents: " + claim.getDocuments());
-                System.out.println("Claim Amount: " + claim.getClaimAmount());
-                System.out.println("Status: " + claim.getStatus());
-                System.out.println("Receiver Banking Information:");
-                System.out.println("Bank Name: " + claim.getBankName());
-                System.out.println("Account Holder's Name: " + claim.getAccountHolderName());
-                System.out.println("Account Number: " + claim.getAccountNumber());
+                System.out.printf("| Claim Date   | %-37s |\n", claim.getClaimDate());
+                System.out.printf("| Insured Person | %-34s |\n", claim.getInsuredPerson());
+                System.out.printf("| Card Number  | %-37s |\n", claim.getCardNumber());
+                System.out.printf("| Exam Date    | %-37s |\n", claim.getExamDate());
+                System.out.printf("| Documents    | %-37s |\n", claim.getDocuments());
+                System.out.printf("| Claim Amount | %-37s |\n", claim.getClaimAmount());
+                System.out.printf("| Status       | %-37s |\n", claim.getStatus());
+                System.out.printf("| Bank Name    | %-37s |\n", claim.getBankName());
+                System.out.printf("| Account Holder's Name | %-29s |\n", claim.getAccountHolderName());
+                System.out.printf("| Receiver Bank Information | %-35s |\n", claim.getAccountNumber());
             } else {
-                System.out.println("Claim not found with ID: " + claimID);
+                System.out.println("| Claim not found with ID: " + claimID);
             }
+
+            System.out.println("+--------------+---------------------------------------+");
         }
 
         public void viewAllClaimsMenu() {

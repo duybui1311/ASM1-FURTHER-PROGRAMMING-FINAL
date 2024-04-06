@@ -50,7 +50,7 @@ public class DataGenerator {
         Admin[] admins = {
                 new Admin("13112004", "Duy Bui", "123456"),
                 new Admin("111111", "admin", "123456"),
-                new Admin("111111", "son hoang", "123456")
+                new Admin("111111", "Lebron James", "123456")
         };
         for (Admin admin : admins) {
             adminController.addAdmin(admin);
