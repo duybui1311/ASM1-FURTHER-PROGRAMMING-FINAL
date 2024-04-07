@@ -7,6 +7,8 @@
     import InsuranceClaimManagementSystem.Controller.*;
     import InsuranceClaimManagementSystem.util.DataGenerator;
 
+    import java.text.ParseException;
+    import java.text.SimpleDateFormat;
     import java.util.ArrayList;
     import java.util.Comparator;
     import java.util.List;
@@ -546,31 +548,87 @@
             System.out.print("Enter the claim ID to update: ");
             String claimID = scanner.nextLine();
 
-
             Claim claimToUpdate = claimsController.getClaimByID(claimID);
 
             if (claimToUpdate != null) {
+                boolean continueUpdating = true;
 
-                System.out.print("Enter new card number: ");
-                int newCardNumber = scanner.nextInt();
-                scanner.nextLine();
+                while (continueUpdating) {
+                    System.out.println("Select attribute to update:");
+                    System.out.println("+-----+-------------------+");
+                    System.out.println("|  1  |   Card Number     |");
+                    System.out.println("|  2  |   Claim Amount    |");
+                    System.out.println("|  3  |   Status          |");
+                    System.out.println("|  4  |   Exam Date       |");
+                    System.out.println("|  5  |   Claim Date      |");
+                    System.out.println("+-----+-------------------+");
+                    System.out.println("|  9  | Finish updating   |");
+                    System.out.println("+-----+-------------------+");
+                    System.out.print("Enter your choice: ");
+                    int choice = scanner.nextInt();
+                    scanner.nextLine();
 
-                System.out.print("Enter new claim amount: ");
-                int newClaimAmount = scanner.nextInt();
-                scanner.nextLine();
-
-
-                claimToUpdate.setCardNumber(newCardNumber);
-                claimToUpdate.setClaimAmount(newClaimAmount);
-
-
-                claimsController.updateClaim(claimToUpdate);
-
-                System.out.println("Claim updated successfully.");
+                    switch (choice) {
+                        case 1:
+                            System.out.print("Enter new card number: ");
+                            int newCardNumber = scanner.nextInt();
+                            scanner.nextLine();
+                            claimToUpdate.setCardNumber(newCardNumber);
+                            System.out.println("Card number updated successfully.");
+                            break;
+                        case 2:
+                            System.out.print("Enter new claim amount: ");
+                            int newClaimAmount = scanner.nextInt();
+                            scanner.nextLine();
+                            claimToUpdate.setClaimAmount(newClaimAmount);
+                            System.out.println("Claim amount updated successfully.");
+                            break;
+                        case 3:
+                            System.out.print("Enter new status (NEW, PROCESSING, DONE): ");
+                            String newStatusStr = scanner.nextLine().toUpperCase();
+                            try {
+                                Claim.Status newStatus = Claim.Status.valueOf(newStatusStr);
+                                claimToUpdate.setStatus(newStatus);
+                                System.out.println("Status updated successfully.");
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Invalid status. Please enter one of the following: NEW, PROCESSING, DONE");
+                            }
+                            break;
+                        case 4:
+                            System.out.print("Enter new exam date (YYYY-MM-DD): ");
+                            String newExamDateStr = scanner.nextLine();
+                            try {
+                                Date newExamDate = new SimpleDateFormat("yyyy-MM-dd").parse(newExamDateStr);
+                                claimToUpdate.setExamDate(newExamDate);
+                                System.out.println("Exam date updated successfully.");
+                            } catch (ParseException e) {
+                                System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+                            }
+                            break;
+                        case 5:
+                            System.out.print("Enter new claim date (YYYY-MM-DD): ");
+                            String newClaimDateStr = scanner.nextLine();
+                            try {
+                                Date newClaimDate = new SimpleDateFormat("yyyy-MM-dd").parse(newClaimDateStr);
+                                claimToUpdate.setClaimDate(newClaimDate);
+                                System.out.println("Claim date updated successfully.");
+                            } catch (ParseException e) {
+                                System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+                            }
+                            break;
+                        case 9:
+                            continueUpdating = false;
+                            break;
+                        default:
+                            System.out.println("Invalid choice. Please enter a number between 1 and 9.");
+                            break;
+                    }
+                }
             } else {
                 System.out.println("Claim not found with ID: " + claimID);
             }
         }
+
 
         public void removeClaimMenu() {
             Scanner scanner = new Scanner(System.in);
