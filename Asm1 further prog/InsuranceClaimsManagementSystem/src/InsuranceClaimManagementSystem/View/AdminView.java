@@ -679,6 +679,8 @@
         }
 
         public void viewAllClaimsMenu() {
+            Scanner scanner = new Scanner(System.in); // Define the scanner variable
+
             System.out.println("----------------------------------");
             System.out.println("         View All Claims           ");
             System.out.println("----------------------------------");
@@ -689,38 +691,65 @@
                 return;
             }
 
-            System.out.println("All claims in the system:");
-            displayClaims(claims);
+            boolean continueSorting = true;
+            while (continueSorting) {
+                System.out.println("All claims in the system:");
+                displayClaims(claims);
 
-            // Sort claims
-            System.out.println("\nSort claims by:");
-            System.out.println("1. Date (Latest to Oldest)");
-            System.out.println("2. Date (Oldest to Latest)");
-            System.out.println("3. Cancel");
-            System.out.print("Enter your choice: ");
-            int sortChoice = scanner.nextInt();
-            scanner.nextLine();
 
-            if (sortChoice == 1 || sortChoice == 2) {
-                // Sort and display claims
-                List<Claim> sortedClaims = sortClaims(sortChoice);
-                System.out.println("\nSorted claims:");
-                displayClaims(sortedClaims);
-            } else if (sortChoice == 3) {
-                System.out.println("Exiting...");
-            } else {
-                System.out.println("Invalid choice. Exiting...");
+                System.out.println("\nSort claims by:");
+                System.out.println("+--------------------------------------------------------+");
+                System.out.println("|  Option  |                 Sorting Criteria               |");
+                System.out.println("+--------------------------------------------------------+");
+                System.out.println("|    1     |         Date (Latest to Oldest)               |");
+                System.out.println("|    2     |         Date (Oldest to Latest)               |");
+                System.out.println("|    3     |         Claim Amount (Low to High)            |");
+                System.out.println("|    4     |         Claim Amount (High to Low)            |");
+                System.out.println("|    5     |         Status                                 |");
+                System.out.println("|    6     |         Finish Sorting                         |");
+                System.out.println("+--------------------------------------------------------+");
+                System.out.print("Enter your choice: ");
+
+                int sortChoice = scanner.nextInt();
+                scanner.nextLine();
+
+                if (sortChoice >= 1 && sortChoice <= 5) {
+                    // Sort and display claims based on user's choice
+                    claims = sortClaims(claims, sortChoice);
+                    System.out.println("\nSorted claims:");
+                    displayClaims(claims);
+                } else if (sortChoice == 6) {
+                    continueSorting = false;
+                } else {
+                    System.out.println("Invalid choice. Please enter a number between 1 and 6.");
+                }
             }
         }
 
-        private List<Claim> sortClaims(int sortChoice) {
-            List<Claim> sortedClaims = new ArrayList<>(claimsController.getAllClaims());
-            Comparator<Claim> comparator = (sortChoice == 1) ?
-                    Comparator.comparing(Claim::getClaimDate).reversed() :
-                    Comparator.comparing(Claim::getClaimDate);
-            sortedClaims.sort(comparator);
+        private List<Claim> sortClaims(List<Claim> claims, int sortChoice) {
+            List<Claim> sortedClaims = new ArrayList<>(claims);
+            switch (sortChoice) {
+                case 1:
+                    sortedClaims.sort(Comparator.comparing(Claim::getClaimDate).reversed());
+                    break;
+                case 2:
+                    sortedClaims.sort(Comparator.comparing(Claim::getClaimDate));
+                    break;
+                case 3:
+                    sortedClaims.sort(Comparator.comparingInt(Claim::getClaimAmount));
+                    break;
+                case 4:
+                    sortedClaims.sort(Comparator.comparingInt(Claim::getClaimAmount).reversed());
+                    break;
+                case 5:
+                    sortedClaims.sort(Comparator.comparing(Claim::getStatus));
+                    break;
+                default:
+                    break;
+            }
             return sortedClaims;
         }
+
 
         public void displayClaims(List<Claim> claims) {
             if (claims.isEmpty()) {
